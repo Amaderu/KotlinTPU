@@ -44,48 +44,16 @@ import kotlin.time.Duration.Companion.seconds
 enum class CallTypes{
     INCOMING, OUTGOING
 }
-object Utils {
-    val DATE_TIME_PATTERN = LocalDateTime.Format {
-        date(
-            LocalDate.Format {
-            		dayOfMonth()
-					char(' ')
-                	monthName(MonthNames.ENGLISH_ABBREVIATED)
-                	chars(" ")
-                	year()
-            }
-        )
-        chars(" ., ")
-        time(
-            LocalTime.Format {
-                hour(); char(':'); minute()
-            }
-        )
-    }
-    
-    
-    
-    val PHONEPATTERN_GB = """/((\d{3})(?:\.|-))?(\d{3})(?:\.|-)(\d{4})/"""
-    val PHONEPATTERN_RU = """^(\+7|\d)\d{5,10}$"""
-    fun phoneCheker(phone: String): Boolean{
-        return if(Regex(PHONEPATTERN_RU).matchEntire(phone) != null) true else false
-    }
-}
-
 
 data class Call(var name : String, val number : String, val callType: CallTypes = CallTypes.OUTGOING){
-    val CallDate: LocalDateTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-    val CallTime: Duration = 0.seconds
 }
 
 class Abonent(){
     private val id: UUID
     	fun getId():UUID{return id}
     private var name: String = ""
-//     	get(){return field}
 	fun getName():String {return name}
     private var phoneNumber: String = ""
-//     	get(){return field}
     fun getPhoneNumber():String {return phoneNumber}
     
     var calls: MutableList<Call> = mutableListOf()
@@ -98,7 +66,6 @@ class Abonent(){
     constructor(Name: String, PhoneNumber: String) : this(){
         name = Name
         phoneNumber = PhoneNumber
-//         phoneNumber = Utils.phoneCheker(value) ?: : 
     }
 }
 
@@ -183,9 +150,8 @@ fun main() {
 //	Create station
     val stationOne = Station(mutableListOf(ivan, maria, evgenyi))
     stationOne.call(ivan.getName(), maria.getName())
-    
     stationOne.call(evgenyi.getName(), maria.getName())
-    
     stationOne.call(maria.getName(), ivan.getName())
+    
     stationOne.showStat()
 }
